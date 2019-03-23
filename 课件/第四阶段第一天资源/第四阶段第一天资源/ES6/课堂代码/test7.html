@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    
+
+    <script>
+        const data = {
+            name: "kevin",
+            age: 18
+        }
+
+        const proxy = new Proxy(data, {
+            set: function (trapTarget, key, value, receiver) {
+                console.log("你正在给" + key + "属性赋值");
+                if (key === "age") {
+                    if (value < 0 || value > 100) {
+                        throw new Error("年龄必须是0-100");
+                    }
+                }
+                //完成正常赋值
+                Reflect.set(trapTarget, key, value, receiver)
+            },
+            get: function (trapTarget, key, receiver) {
+                console.log("你正在读取" + key + "属性值");
+                //完成正常的读取
+                return Reflect.get(trapTarget, key, receiver);
+            }
+        });
+        proxy.age = -1;
+        console.log(proxy.age);
+    </script>
+</body>
+
+</html>

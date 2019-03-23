@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="jquery.min.js"></script>
+
+    <script>
+
+        //回调地狱
+        //服务器提供四个接口：学生、班级、老师、课程
+        //找出张三所在班级的物理课授课老师的姓名
+        $.get("请求学生接口", function(stus){
+            //找到张三所在班级的id
+            $.get("请求班级接口", function(classes){
+                //通过班级的id找到对应的班级对象，然后从班级对象中拿到所有的课程，找到物理课id
+                $.get("请求课程", function(courses){
+                    //通过物理课id找到物理课的任课老师的id
+                    $.get("...")
+                })
+            })
+        })
+    </script>
+</body>
+</html>

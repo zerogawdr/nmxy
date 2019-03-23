@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button>ajax获取数据</button>
+    <script src="jquery.min.js"></script>
+    <script>
+        $("button").click(function(){
+            $.get("https://yuanjin.tech:5005/api/movie", (resp)=>{
+                console.log(resp);
+                //将按钮变成红色
+                // this.style.background = "red";
+                $(this).css("background","red");
+            })
+        })
+    </script>
+</body>
+</html>
