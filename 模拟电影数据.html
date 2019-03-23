@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="content"> 
+        <ul class="list">
+
+        </ul>
+        <div class="btnbox" >
+            <input type="button" disabled="disabled" value="上一页" class="prev" />
+            <input type="button" value="下一页" class="next" />
+        </div>
+    </div>
+
+    <script>
+    $(function(){
+        let count=1;
+     
+        $('.prev').attr("disabled",true)
+        
+        function addMovies(count){    
+                // $("ul").empty()
+                // $('.prev').removeAttr("disabled");
+                fetch("https://yuanjin.tech:5005/api/movie?page="+count)
+                .then(result=>result.json())
+                .then(data=>{
+                    let msg=data.data         
+                    // console.log(msg)
+                    msg.forEach((item,index)=>{
+                        let li=document.createElement('li');
+                        $("ul").append(li);
+                        //  console.log(item)
+                        $("li").eq(index).html(`
+                            <span class='movename'>电影名:<a href="#">${item.name}</a></span> 
+                            <span class='movearea'>上映地区:<a href="#">${item.area}</a></span>
+                            <span class='movetype'>电影类型:<a href="#">${item.type}</a></span> 
+                        `)  
+
+                    })    
+                    
+                })
+            
+        }
+        addMovies(count)
+
+        $(".next").bind('click',(e)=>{
+            // e.preventDefault()    
+            
+            count++;
+            console.log(count)
+            if(count>1&&count<3){
+                $('.prev').removeAttr("disabled");
+                $("ul").empty()     
+                addMovies(count)
+            }else{
+                $("ul").empty()     
+                addMovies(count)
+                $(".next").attr("disabled",true)
+              
+            }
+            
+        })
+        $(".prev").bind('click',(e)=>{
+            // e.preventDefault() 
+           
+            count--
+            console.log(count)
+            if(count<=1){
+                $(".prev").attr("disabled",true)
+                addMovies(count)
+            }else{
+                // $("ul").empty()
+                $(".next").removeAttr("disabled");
+                addMovies(count)
+            }
+      
+        })
+    })
+    
+    </script>
+</body>
+</html>
