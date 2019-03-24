@@ -22,6 +22,7 @@
             this.data = new Proxy(u, {
                 set(trapTarget, key, value, receiver){
                     Reflect.set(trapTarget, key, value, receiver);
+                    console.log(receiver,trapTarget)
                     render(trapTarget);
                 }
             });
@@ -31,6 +32,7 @@
             name:"suny",
             age:18
         })
+     
     </script>
 </body>
 </html>
