@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            width:100px;
+            height: 100px;
+            background: red;
+            transition: all .5s;
+        }
+
+        .active{
+            width:150px;
+            height: 150px;
+            background: blue;
+            color:#fff;
+            transition: all .5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <div @click="isActive=!isActive" :class="{container:!isActive, active:isActive}">
+
+        </div> -->
+
+        <div style="width:100px; height:100px;" :style="{background:`rgb(${r}, ${g}, ${b})`}">
+
+        </div>
+        <input type="number" max="255" min="0" v-model="r">
+        <input type="number" max="255" min="0" v-model="g">
+        <input type="number" max="255" min="0" v-model="b">
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            data:{
+                isActive:false,
+                r:0,
+                g:0,
+                b:0
+            }
+        })
+    </script>
+</body>
+</html>

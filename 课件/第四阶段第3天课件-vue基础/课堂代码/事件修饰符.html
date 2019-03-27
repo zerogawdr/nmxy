@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div @click="handleOutDiv" style="background:red; height:300px; width:300px;">
+            <div @click.stop="handleInnerDiv" style="background: blue; height:100px; width:100px;">
+
+            </div>
+        </div>
+        <a href="" @click.prevent="handleA">
+            有JS事件的a元素
+        </a>
+
+        <form action="" @submit.prevent>
+            <input type="text" @keydown.enter="handleKeyDown">
+            <button>提交</button>
+        </form>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            methods:{
+                handleOutDiv(){
+                    console.log('外层的div被点击了')
+                },
+                handleInnerDiv(){
+                    console.log('里层的div被点击了')
+                },
+                handleA(){
+                    console.log("a元素被点击了！！！");
+                },
+                handleSubmit(){
+                    console.log("表单被提交了");
+                },
+                handleKeyDown(){
+                    console.log("回车键按下了！！");
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>
+            添加分数：<input type="number" v-model="newScore" @keydown.enter="handleAdd">
+        </p>
+        <p>
+            {{scores.join(",")}}
+        </p>
+        <p>
+            及格人数：{{passNumber}}
+        </p>
+        <p>
+            及格人数：{{passNumber}}
+        </p>
+        <p>
+            及格人数：{{passNumber}}
+        </p>
+        <p>
+            及格人数：{{passNumber}}
+        </p>
+        <p>
+            及格人数：{{passNumber}}
+        </p>
+        <p>
+            不及格人数：{{unPassNumber}}
+        </p>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        new Vue({
+            data: {
+                scores: [34, 67, 88, 100, 33],
+                newScore: 0
+            },
+            computed: {
+                passNumber() {
+                    console.log("正在计算及格人数");
+                    return this.scores.filter(item => item >= 60).length;
+                },
+                unPassNumber() {
+                    return this.scores.length - this.passNumber;
+                }
+            },
+            methods: {
+                handleAdd() {
+                    this.scores.push(this.newScore)
+                    this.newScore = 0;
+                }
+            }
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>

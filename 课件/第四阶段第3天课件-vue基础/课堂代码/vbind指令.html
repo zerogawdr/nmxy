@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-bind:value="message">
+
+        <img :src="imgurl" alt="">
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        const vm = new Vue({
+            data:{
+                message:"Hello",
+                imgurl:"http://img4.imgtn.bdimg.com/it/u=989073426,2061831094&fm=26&gp=0.jpg"
+            },
+            el:"#app"
+        })
+    </script>
+</body>
+</html>

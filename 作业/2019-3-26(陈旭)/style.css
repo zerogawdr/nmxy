@@ -1,0 +1,15 @@
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    text-decoration: none;
+
+}
+a:focus{
+    text-decoration: none;
+
+}
+.container .well h1{
+    text-align: center;
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>
+            {{message}}
+        </h1>
+        <h2>
+            {{sayHello()}}
+        </h2>
+        <ul>
+            <li v-for="item in products" :key="item.id">
+                {{item.name}}，库存：
+                <span v-if="item.stock > 0">{{item.stock}}</span>
+                <span v-if="item.stock === 0" style="color:red">已售空</span>
+
+                <button @click="handleDec(item)">库存-1</button>
+                <button @click="item.stock++">库存+1</button>
+
+                <input type="number" v-model.number="item.stock">
+            </li>
+        </ul>
+        <h2>
+            总库存：{{total}}
+        </h2>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        
+        const vm = new Vue({ //创建Vue实例
+            data:{
+                message:"Hello Vue",
+                products:[
+                    {id:1, name:"小米手机", stock:6},
+                    {id:2, name:"苹果笔记本", stock:3},
+                    {id:3, name:"锤子手机", stock:0}
+                ]
+            },
+            methods:{
+                handleDec(p){
+                    if(p.stock === 0){
+                        return;
+                    }
+                    p.stock--;
+                    //得到vue实例vm
+                    this.message = "asfsdf"
+                },
+                sayHello(){
+                    return new Date().toLocaleString();
+                }
+            },
+            computed:{
+                total(){
+                    let sum = 0;
+                    for(let item of this.products){
+                        sum += item.stock;
+                    }
+                    return sum;
+                }
+            }
+        });
+        vm.$mount("#app");
+    </script>
+</body>
+</html>

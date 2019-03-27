@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+       asfsadfasfasfsafas
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        const vm = new Vue({
+            data: {
+                firstName: "袁",
+                lastName: "进"
+            },
+            template:`
+            <div>
+                    <input type="text" v-model="fullName">
+        姓：{{firstName}}, 名: {{lastName}}, 全名:{{fullName}}
+                </div>
+            
+            `,
+            computed: {
+                fullName: {
+                    get(){
+                        return this.firstName + this.lastName;
+                    },
+                    set(val){
+                        this.firstName = val[0];
+                        this.lastName = val.substring(1);
+                    }
+                }
+            }
+        })
+        vm.$mount("#app")
+    </script>
+</body>
+
+</html>

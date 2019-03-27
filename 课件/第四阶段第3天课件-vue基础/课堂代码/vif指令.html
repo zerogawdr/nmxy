@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="showEle='div'">显示div</button>
+        <button @click="showEle='p'">显示p</button>
+        <button @click="showEle='input'">显示图片</button>
+        <div v-if="showEle==='div'">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio consequuntur obcaecati magni odio molestiae veniam nihil ea iusto unde repudiandae doloribus voluptas reiciendis eos ex necessitatibus, cum itaque cumque repellat.
+        </div>
+        <p v-else-if="showEle==='p'">
+            啊撒旦飞洒发生发射点发撒旦发撒旦发
+        </p>
+        <input type="text" v-else>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+       const vm = new Vue({
+            data:{
+                showEle:"div"
+            },
+            el:"#app"
+        })
+    </script>
+</body>
+</html>
