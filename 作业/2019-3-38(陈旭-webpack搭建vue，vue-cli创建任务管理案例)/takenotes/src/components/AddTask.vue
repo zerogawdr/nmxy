@@ -23,9 +23,9 @@
             }
         },
         methods: {
-            addMsg(newMsg){
+            addMsg(newMsg){//把添加的任务数据传递给父组件
                 this.$emit("addMsg",newMsg)
-                this.newMsg=''
+                this.newMsg=''//传递后清空输入框
             }
         },
     }

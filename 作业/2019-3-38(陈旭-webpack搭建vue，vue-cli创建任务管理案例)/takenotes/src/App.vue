@@ -12,13 +12,13 @@
 
 <script>
 
-import TaskSelect from './components/TaskSelect'
-import TaskList from './components/TaskList'
-import AddTask from './components/AddTask'
-import Loading from './components/loading'
+import TaskSelect from './components/TaskSelect' //情况分类
+import TaskList from './components/TaskList' //任务列表
+import AddTask from './components/AddTask' //添加任务组件
+import Loading from './components/loading' //引入数据请求完成前加载效果组件
 export default {
   name: 'app',
-  components: {
+  components: {//祖册组件
     TaskSelect,
     TaskList,
     AddTask,
@@ -26,16 +26,16 @@ export default {
   },
   data() {
     return {
-      filter:"all",
-      tasklist:[],
-      info:false,
-      loading:true
+      filter:"all", //分类情况状态
+      tasklist:[],//任务列表数据
+      info:false,//添加为空时候的提示判断
+      loading:true //数据请求完成前加载效果判断
       
     }
     
   },
   methods: {
-    changestatus(i){
+    changestatus(i){ //点击更改任务状态
       // console.log(i)
       this.tasklist.forEach((item,index)=>{
         if(item==i){
@@ -48,7 +48,7 @@ export default {
         }
       })
     },
-    deletTask(item){
+    deletTask(item){ //删除任务
         if(confirm("你确定删除吗")){
           this.tasklist=this.tasklist.filter(it=>it!=item)
         }
@@ -66,7 +66,7 @@ export default {
         }
     },
   },
-  async created() {
+  async created() { //从远程请求数据
     let result=await fetch('https://api.myjson.com/bins/y6a0m');
     result=await result.json();
     // console.log(result)
@@ -74,7 +74,7 @@ export default {
     this.loading=false
   },
   computed: {
-    ListFilter(){
+    ListFilter(){//各个分类下自动计算列表
       if(this.filter==="all"){
         return this.tasklist
       }else if(this.filter==="finish"){
