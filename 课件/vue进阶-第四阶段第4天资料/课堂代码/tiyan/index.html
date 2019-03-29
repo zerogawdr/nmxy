@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .finish {
+            color: green;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="vue.js"></script>
+    <script>
+        const OneTask = {
+            data() {
+                return {
+                    name: "学习Vue基础",
+                    isFinish: true
+                }
+            },
+            template: `
+                <li :class="{finish: isFinish}">{{name}} <button>删除</button></li>
+            `
+        }
+
+        const TaskFilter = {
+            template: `
+                <div>
+                        <span>全部</span>
+                <span>已完成</span>
+                <span>未完成</span>
+                </div>
+            `
+        }
+        
+        const App = {
+            components: {
+                OneTask,
+                TaskFilter
+            },
+            template:`
+                <div>
+                        <task-filter></task-filter>
+                        <one-task></one-task>
+                    </div>
+                
+            `
+        }
+
+        new Vue({
+            render:h=>h(App)
+        }).$mount("#app")
+    </script>
+</body>
+
+</html>

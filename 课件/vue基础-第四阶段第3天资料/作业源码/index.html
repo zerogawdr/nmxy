@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>库存管理系统</title>
+    <style>
+        #app {
+            width: 350px;
+        }
+
+        .form-item {
+            margin: .5em 0;
+        }
+
+        .error {
+            color: red;
+        }
+
+        ul li {
+            line-height: 2;
+            cursor: pointer;
+            color: red;
+        }
+
+        .isFinish {
+            text-decoration: line-through;
+            color: green;
+        }
+
+        .selected {
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        span {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <form @submit.prevent>
+            <fieldset>
+                <legend>添加任务</legend>
+                <div class="form-item">
+                    输入任务名后按回车键添加任务
+                </div>
+                <div class="form-item">
+                    任务名：<input v-model="newTaskName" @keyDown.enter="handleSubmit" type="text" placeholder="请输入任务名称">
+                </div>
+                <div v-if="errorMsg" class="form-item error">
+                    {{errorMsg}}
+                </div>
+            </fieldset>
+        </form>
+        <div class="form-item">
+            <span @click="filter='all'" :class="{selected:filter==='all'}">全部</span>
+            <span @click="filter='finish'" :class="{selected:filter==='finish'}">已完成</span>
+            <span @click="filter='unfinish'" :class="{selected:filter==='unfinish'}">未完成</span>
+        </div>
+
+        <div>
+            <ul v-if="filterTasks.length > 0">
+                <li v-for="(item, index) in filterTasks" :key="index" :class="{isFinish:item.isFinish}"
+                    @click="handleClick(item)">
+                    {{item.name}} {{item.isFinish?"已完成":"等待完成"}}
+                    <button @click.stop="handleDelete(item)">删除</button>
+                </li>
+            </ul>
+            <p v-else>
+                无数据
+            </p>
+        </div>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                tasks: [ //当前的所有任务
+                    {
+                        name: "学习ES6",
+                        isFinish: true
+                    },
+                    {
+                        name: "完成ES6的作业",
+                        isFinish: true
+                    },
+                    {
+                        name: "学习Webpack",
+                        isFinish: true
+                    },
+                    {
+                        name: "完成Webpack的作业",
+                        isFinish: true
+                    },
+                    {
+                        name: "学习Vue基础",
+                        isFinish: false
+                    },
+                    {
+                        name: "完成Vue基础的的作业",
+                        isFinish: false
+                    }
+                ],
+                newTaskName: "", //新的任务名称
+                errorMsg: "", //新任务添加时的错误信息
+                filter: "all" //当前的过滤方式: all表示所有，finish表示已完成，unfinish表示未完成
+            },
+            computed: {
+                filterTasks() { //按照过滤器得到结果
+                    if (this.filter === "all") {
+                        return this.tasks;
+                    } else if (this.filter === "finish") {
+                        return this.tasks.filter(it => it.isFinish);
+                    } else {
+                        return this.tasks.filter(it => !it.isFinish);
+                    }
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    if (!this.newTaskName) {
+                        this.errorMsg = "请输入任务名称";
+                    } else {
+                        this.errorMsg = "";
+                        this.tasks.push({
+                            name: this.newTaskName,
+                            isFinish: false
+                        })
+                        this.newTaskName = "";
+                    }
+                },
+                handleClick(item) {
+                    item.isFinish = !item.isFinish;
+                },
+                handleDelete(item) {
+                    if (confirm("确定删除吗？")) {
+                        this.tasks = this.tasks.filter(it => it != item);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
