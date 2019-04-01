@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .select-number {
+            width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .balls {
+            border: 1px solid black;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .balls li {
+            list-style-type: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            text-align: center;
+            line-height: 40px;
+            float: left;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .red-number {
+            width: 600px;
+        }
+
+        .blue-number {
+            width: 400px;
+        }
+
+        .red-number p,
+        .blue-number p {
+            text-align: center;
+            font-size: 24px;
+            padding: 30px 0;
+        }
+
+        .select-red .selected {
+            background-color: red;
+            color: white;
+        }
+
+        .select-blue .selected {
+            background-color: blue;
+            color: white;
+        }
+
+        .confirm {
+            display: block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid #aaa;
+            font-size: 16px;
+            margin: 30px auto;
+        }
+
+        .select-show {
+            width: 550px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .select-show .balls {
+            border: none;
+            padding: 0;
+            width: 400px;
+            height: 54px;
+        }
+
+        .select-show .red-ball {
+            border: 2px solid red;
+            color: red;
+        }
+
+        .select-show .blue-ball {
+            border: 2px solid blue;
+            color: blue;
+        }
+
+        .prompt {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="select-number" id="selectBalls">
+        <div class="red-number">
+            <p>红球区</p>
+            <ul class="balls select-red" id="selectRed"></ul>
+        </div>
+        <div class="blue-number">
+            <p>蓝球区</p>
+            <ul class="balls select-blue" id="selectBlue"></ul>
+        </div>
+    </div>
+
+    <input type="button" value="确认选号" class="confirm" id="confirm">
+
+    <div class="select-show">
+        <p>用户选择号码</p>
+        <ul class="balls" id="userShow">
+        </ul>
+    </div>
+    <div class="select-show">
+        <p>今日开奖号码</p>
+        <ul class="balls" id="systemShow">
+        </ul>
+    </div>
+    <div class="select-show" style="font-size:2em;">
+        <p>中奖情况：<span id="spanResult"></span></p>
+    </div>
+
+    <h1 class="prompt" id="prompt"></h1>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script>
+        //用户选择的球
+        const userBalls = {
+            red: [],
+            blue: []
+        };
+        const sysBalls = {
+            red: [],
+            blue: []
+        }
+        //设置用户的选择数据
+        function setNumbers(li, type) {
+            num = $(li).html() * 1;
+            if (userBalls[type].includes(num)) {
+                userBalls[type] = _.pull(userBalls[type], num);
+            } else {
+                //添加
+                if (type === "red" && userBalls[type].length === 6) {
+                    return;
+                } else if (type === "blue") {
+                    userBalls[type][0] = num;
+                } else {
+                    userBalls[type].push(num);
+                }
+            }
+            show();
+        }
+        //创建用户选择区
+        function createSelectArea() {
+            for (let i = 1; i <= 33; i++) {
+                $("<li>").html(i).appendTo($("#selectRed")).click(function () {
+                    setNumbers(this, "red");
+                });
+            }
+            for (let i = 1; i <= 16; i++) {
+                $("<li>").html(i).appendTo($("#selectBlue")).click(function () {
+                    setNumbers(this, "blue");
+                });
+            }
+        }
+        //显示用户的选择
+        function show() {
+            //清除样式
+            $("#selectRed li,#selectBlue li").removeClass("selected");
+            $("#userShow").empty();
+            $("#spanResult").empty();
+            $("#systemShow").empty();
+            //设置样式
+            $("#selectRed li").each((index, item) => {
+                if (userBalls.red.includes($(item).html() * 1)) {
+                    $(item).addClass("selected");
+                }
+            })
+            $("#selectBlue li").each((index, item) => {
+                if (userBalls.blue.includes($(item).html() * 1)) {
+                    $(item).addClass("selected");
+                }
+            })
+            userBalls.red.forEach(num => {
+                $("<li>").html(num).addClass("red-ball").appendTo("#userShow");
+            })
+            userBalls.blue.forEach(num => {
+                $("<li>").html(num).addClass("blue-ball").appendTo("#userShow");
+            })
+        }
+
+        //生成系统小球
+        function createSysBalls() {
+            sysBalls.red = [];
+            sysBalls.blue = [];
+            while (sysBalls.red.length < 6) {
+                const num = _.random(1, 33);
+                if (!sysBalls.red.includes(num)) {
+                    sysBalls.red.push(num);
+                }
+            }
+            sysBalls.blue.push(_.random(1, 16));
+            //显示系统小球
+            $("#systemShow").empty();
+            sysBalls.red.forEach(num => {
+                $("<li>").html(num).addClass("red-ball").appendTo("#systemShow");
+            })
+            sysBalls.blue.forEach(num => {
+                $("<li>").html(num).addClass("blue-ball").appendTo("#systemShow");
+            })
+        }
+
+        function showResult() {
+            const redCount = _.intersection(userBalls.red, sysBalls.red).length;
+            const blueCount = _.intersection(userBalls.blue, sysBalls.blue).length;
+            let result;
+            if (redCount == 6 && blueCount == 1) {
+                result = '一等奖';
+            } else if (redCount == 6) {
+                result = '二等奖';
+            } else if (redCount == 5 && blueCount == 1) {
+                result = '三等奖';
+            } else if (redCount == 5 || (blueCount == 1 && redCount == 4)) {
+                result = '四等奖';
+            } else if (redCount == 4 || (blueCount == 1 && redCount == 3)) {
+                result = '五等奖';
+            } else if (blueCount == 1) {
+                result = '六等奖';
+            } else {
+                result = '没有中奖';
+            }
+            $("#spanResult").html(result);
+        }
+
+        function ok() {
+            if (userBalls.red.length < 6 || userBalls.blue.length < 1) {
+                alert("请选择6个红球和1个蓝球");
+                return;
+            }
+            createSysBalls();
+            showResult();
+        }
+        createSelectArea();
+        $("#confirm").click(ok);
+    </script>
+</body>
+
+</html>
