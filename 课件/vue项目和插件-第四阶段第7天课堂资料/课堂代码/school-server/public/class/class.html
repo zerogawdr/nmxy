@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>课程</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <style>
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div>
+        <button type="" class="layui-btn layui-btn-normal" onclick="addClass()">添加班级</button>
+    </div>
+    <!-- 内容主体区域 -->
+    <table id="showStu"></table>
+
+
+
+    <script src="../js/mock-min.js"></script>
+    <script src="../js/lodash.min.js"></script>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/class.js"></script>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+
+    <script>
+        // JavaScript代码区域
+        layui.use(['table', 'layer'], function () {
+            const showclass = layui.table;
+            showclass.render({
+                elem: "#showStu",
+                page: true,
+                url: '/api/class',
+                cols: [
+                    [{
+                        field: '_id',
+                        title: '编号'
+                    }, {
+                        field: 'name',
+                        title: '班级名称'
+                    }, {
+                        title: '操作',
+                        templet: `<div>
+                                    <div class="layui-btn-group"> 
+                                            <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" onclick="delClass('{{d._id}}',this)">
+                                              <i class="layui-icon">&#xe640;</i>
+                                            </button>
+                                    </div>
+                                       </div>`
+                    }]
+                ],
+            })
+        });
+
+        function delClass(id, button) {
+            $.ajax({
+                url: "/api/class/" + id,
+                method: "delete",
+                dataType: "JSON",
+                success: function (data) {
+                    if (data) {
+                        layer.msg('删除班级成功', {
+                            icon: 1,
+                            time: 1000
+                        }, function () {
+                            $(button).parents("tr").remove();
+                        });
+                    } else {
+                        layer.msg('删除班级失败，请先移除该班级中的学生', {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+        }
+
+        function addClass() {
+            $.post("/api/class", null, function (data) {
+                console.log(data);
+            }, "json");
+            // location.href="class.html";
+            // $.getJSON("/class", function (data) {
+            //     console.log(data);
+            // });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>课程</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <style>
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>
+            <button data-target="" class="layui-btn layui-btn-sm"><a href="./student.html">返回</a></button>
+            <span id="spantitle"></span>
+        </legend>
+    </fieldset>
+
+    <form class="layui-form" lay-filter="studentEdit" action="" onsubmit="return false">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">学生姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" placeholder="学生姓名" lay-verify="required" autocomplete="off" class="layui-input"
+                        id="name">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="age" lay-verify="required|number" placeholder="请输入年龄" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">住址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="address" placeholder="请输入住址" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择性别</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="gender" value="男" title="男" checked>
+                    <input type="radio" name="gender" value="女" title="女">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">在读课程</label>
+                <div class="layui-input-inline">
+                    <select name="course" lay-verify="required" id="coursename">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">所属班级</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="class" placeholder="请填写班级名称" lay-verify="required" autocomplete="off"
+                        class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="stu-add" id="btnSubmit"></button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/jquery-1.12.4.min.js"></script>
+
+    <script>
+        function query() {
+            const q = {};
+            const parts = location.href.split("?");
+            if (parts.length == 1) {
+                return q;
+            }
+            parts.pop().split("&")
+                .map(it => it.split("="))
+                .forEach(([p, v]) => {
+                    q[p] = decodeURIComponent(v);
+                });
+            return q;
+        }
+        //如何知道，当前页面是要做添加还是要做修改
+        const q = query(); //得到参数对象
+        let words = "添加学生";
+        let method = "post";
+        let url = "/api/student";
+        if (q.id) {
+            //修改
+            words = "修改学生";
+            method = "put";
+            url = "/api/student/" + q.id;
+        }
+        $("#spantitle").html(words)
+        $("#btnSubmit").html(words)
+        layui.use(['form', 'layer'], async function () {
+            const form = layui.form;
+            const layer = layui.layer;
+            const resp = await $.getJSON("/api/course")
+            resp.data.forEach(function (item) {
+                $("<option>").val(item._id).text(item.name).appendTo("#coursename");
+            })
+            form.render("select");
+            //如果是修改学生，则需要让表单具有默认值
+            if (q.id) {
+                const student = await $.get("/api/student/" + q.id)
+                const cls = await $.get("/api/class/" + student.class)
+                student.class = cls.name;
+                form.val("studentEdit", student);
+            }
+            form.on("submit(stu-add)", async function (data) {
+                const className = data.field.class; //得到班级名称
+
+                //通过班级名称查询班级，得到班级id
+                const resp = await $.getJSON("/api/class", {
+                    key: className
+                })
+                if (resp.count == 0) {
+                    //班级不存在
+                    layer.msg("班级不存在", {
+                        icon: 2
+                    });
+                    return;
+                }
+                data.field.class = resp.data[0]._id;
+                await $.ajax(url, {
+                    method,
+                    data: data.field
+                })
+                layer.msg(words + '成功', {
+                    icon: 1,
+                    time: 1000
+                }, function () {
+                    location.href = "student.html";
+                });
+            })
+        });
+    </script>
+</body>
+
+</html>
