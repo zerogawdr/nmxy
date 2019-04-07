@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>课程</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <style>
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div>
+        <button class="layui-btn layui-btn-normal"><a href="./addcourse.html" style="color:white;">添加课程</a></button>
+    </div>
+    <!-- 内容主体区域 -->
+    <table id="showStu"></table>
+
+
+    <!-- <script src="../js/mock-min.js"></script> -->
+    <script src="../js/lodash.min.js"></script>
+    <script src="../layui/layui.js"></script>
+    <!-- <script src="../js/course.js"></script> -->
+    <script src="../js/jquery-1.12.4.min.js"></script>
+    <script>
+        // JavaScript代码区域
+        layui.use(['element', 'table', 'form', 'layer'], function () {
+            const showcourse = layui.table;
+            showcourse.render({
+                elem: "#showStu",
+                // page: true,
+                url: '/api/course',
+                cols: [
+                    [
+                        {
+                            field: '_id',
+                            title: '编号'
+                        }, {
+                            field: 'name',
+                            title: '课程名'
+                        }, {
+                            field: 'hours',
+                            title: '课时'
+                        }, {
+                            title: '操作',
+                            templet: `<div>
+                                    <div class="layui-btn-group">
+                                            <button class="layui-btn layui-btn-sm" onclick="updCourse({{d.id}})">
+                                              <i class="layui-icon">&#xe642;</i>
+                                            </button>  
+                                            <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" onclick="delCourse({{d.id}},this)">
+                                              <i class="layui-icon">&#xe640;</i>
+                                            </button>
+                                    </div>
+                                       </div>`
+                        }
+                    ]
+                ],
+            })
+            const form = layui.form;
+            form.render();
+        });
+        function updCourse(id) {
+            location.href = "updcourse.html?id=" + id;
+        }
+        function delCourse(id,button) {
+            $.ajax({
+                url: "/api/course/" + id,
+                method: "delete",
+                success: function (data) {
+                    layer.msg('删除课程成功', {
+                        icon: 1,
+                        time: 1000
+                    }, function () {
+                        $(button).parents("tr").remove();
+                    });
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
