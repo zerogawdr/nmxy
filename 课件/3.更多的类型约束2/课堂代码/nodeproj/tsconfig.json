@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "esnext", //编译的目标版本
+        "module": "commonjs", //工程中使用的模块化标准
+        "lib": ["es2015"], //ts的默认执行环境为ES7
+        "strictNullChecks":true,
+        "strictPropertyInitialization": true
+    }
+}

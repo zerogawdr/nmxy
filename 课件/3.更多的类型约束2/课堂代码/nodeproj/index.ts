@@ -1,0 +1,3 @@
+[].some(item => {
+    return false;
+});
