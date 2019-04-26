@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p id="name"></p>
+    <p id="age"></p>
+
+    <script src="jquery.min.js"></script>
+    <script>
+        function render(user){
+            $("#name").html(user.name);
+            $("#age").html(user.age);
+        }
+
+        function App(u){
+            render(u);
+            this.data = new Proxy(u, {
+                set(trapTarget, key, value, receiver){
+                    Reflect.set(trapTarget, key, value, receiver);
+                    render(trapTarget);
+                }
+            });
+        }
+
+        const app = new App({
+            name:"suny",
+            age:18
+        })
+    </script>
+</body>
+</html>

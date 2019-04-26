@@ -6,7 +6,7 @@ module.exports = {
     devtool: false,
     entry: {
         app:"./src/app.js",
-        help:"./src/page/page.js"
+        help:"./src/help/helper.js"
     },
     output:{
         path: path.resolve("./dist"),
@@ -44,7 +44,7 @@ module.exports = {
             title:"这里是页面标题",
             template:"public/index.html" //这里是配置页面模板，在模板中可以使用<%= htmlWebpackPlugin.options %>动态读取插件的配置对象
         }),
-        new CleanWebpackPlugin(),//打包后清理之前的文件
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: "css/[name].[hash:5].css"
         })

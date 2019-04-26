@@ -1,0 +1,58 @@
+<html>
+<head>
+    <style type="text/css">
+        div{
+            margin-top:50px;
+            margin-bottom: 51px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            eventHandler(document,'contextmenu',function(event){
+                event = event || window.event;
+                event.preventDefault?(event.preventDefault()):(event.returnValue = false);
+                var menu = document.getElementById('myContextMenu'),
+                pageX = event.pageX?event.pageX:(event.clientX+(document.body.scrollLeft||document.documentElement.scrollLeft)),
+                pageY = event.pageY?event.pageY:(event.clientY+(document.body.scrollTop||document.documentElement.scrollTop));
+                menu.style.left = pageX+'px';
+                menu.style.top = pageY+'px';
+                menu.style.visibility = 'visible';
+            });
+            eventHandler(document,'click',function(event){
+                document.getElementById('myContextMenu').style.visibility = 'hidden';
+            })
+        }
+        function eventHandler(dom,type,fn){
+            if(typeof dom.addEventListener != 'undefined'){
+                dom.addEventListener(type,fn,false);
+            }else if(typeof dom.attachEvent != 'undefined'){
+                dom.attachEvent('on'+type,fn);
+            }else{
+                dom['on'+type] = fn;
+            }
+        }
+    </script>
+</head>
+<body>
+    <ul id='myContextMenu' style="padding:0;margin:0;list-style:none;position:absolute;visibility:hidden;background-color:silver;">
+        <li>hi</li>
+        <li><a href="#">hello</a></li>
+    </ul>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+    <div>asdfasf</div>
+</body>
+</html>

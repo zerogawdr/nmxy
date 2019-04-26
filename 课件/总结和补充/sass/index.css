@@ -1,0 +1,24 @@
+.container {
+    padding: 1em;
+}
+
+.container>.content-area {
+    margin: 1em;
+}
+
+.container>.content-area .top {
+    font-size: 2em;
+}
+
+.container>.content-area .top::before {
+    content: "";
+    display: block;
+}
+
+.container>.content-area .mid {
+    color: gray;
+}
+
+.container .title-area {
+    box-sizing: border-box;
+}

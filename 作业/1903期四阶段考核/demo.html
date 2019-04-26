@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            background: #cdc5b4;
+            margin: 0;
+        }
+
+        #app {
+
+            outline: none;
+            border: none;
+            background: none;
+            position: relative;
+            z-index: 10;
+
+        }
+
+        .toggle-body {
+            padding: 20px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: space-around;
+            transition: all .2s ease-in
+        }
+
+        .toggle-colum {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .toggle-item {
+            height: 4px;
+            width: 4px;
+            background-color: #c1866a;
+        }
+
+        .active {
+            width: 17px;
+            height: 17px;
+            transform: scale(0.8)
+        }
+
+        .global-mask {
+            background-color: rgba(0, 0, 0, 0.65);
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 9999
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div @click.prevent='change($event)' :class="['toggle-body', {active:active}]">
+            <div class="toggle-colum">
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+            </div>
+            <div class="toggle-colum">
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+            </div>
+            <div class="toggle-colum">
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+                <div class="toggle-item"></div>
+            </div>
+        </div>
+        <div @click='change1' v-show="active?true:false" class="global-mask">
+            <div class="box"></div>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                active: false
+            }
+        },
+
+        methods: {
+            change(e) {
+                this.active = !this.active
+                // if (this.active) {
+                //     console.log(e)
+                // }
+            },
+            change1() {
+                this.active = !this.active
+            }
+        },
+    })
+</script>
+
+</html>
